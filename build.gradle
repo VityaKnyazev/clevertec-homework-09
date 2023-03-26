@@ -1,0 +1,29 @@
+plugins {
+     id 'java-library'
+}
+
+ext {
+	javaVersion = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+    	languageVersion.set(JavaLanguageVersion.of("$javaVersion"))
+    }
+}
+
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+dependencies {
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
