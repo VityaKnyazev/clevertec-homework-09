@@ -12,7 +12,7 @@ public class ConcurrentList<E> implements SimpleList<E> {
 	private static final Lock lock = new ReentrantLock();
 
 	private int totalListSize;
-	private int elListSize;
+	private volatile int elListSize;
 
 	private Object[] object;
 
