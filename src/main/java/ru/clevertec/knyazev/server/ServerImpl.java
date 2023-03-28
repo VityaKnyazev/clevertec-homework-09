@@ -18,7 +18,7 @@ public class ServerImpl extends Server<Integer> implements MultiThreadingDataTra
 	public void getRequest(Request clientRequest) {
 		try {
 			serverData.add(clientRequest.getRequestData());
-			Thread.sleep(new Random().nextInt(100, 1000));
+			Thread.sleep(new Random().nextInt(100, 1001));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

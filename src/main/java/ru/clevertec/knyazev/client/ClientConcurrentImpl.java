@@ -9,10 +9,10 @@ import ru.clevertec.knyazev.data.MultiThreadingDataTransfer;
 import ru.clevertec.knyazev.data.Request;
 import ru.clevertec.knyazev.data.Response;
 
-public class ClientImpl extends Client<Integer> implements MultiThreadingDataTransfer<Request, Response> {
+public class ClientConcurrentImpl extends Client<SimpleList<Integer>> implements MultiThreadingDataTransfer<Request, Response> {
 	private AtomicInteger accumulator;
 
-	public ClientImpl(SimpleList<Integer> clientData) {
+	public ClientConcurrentImpl(SimpleList<Integer> clientData) {
 		super(clientData);
 
 		this.accumulator = new AtomicInteger(0);

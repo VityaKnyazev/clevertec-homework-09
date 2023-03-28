@@ -4,6 +4,9 @@ plugins {
 
 ext {
 	javaVersion = '17'
+	
+	junitJupiterVersion = '5.9.1'
+	assertJVersion = '3.24.2'
 }
 
 repositories {
@@ -21,7 +24,9 @@ compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
 dependencies {
-
+	testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+	testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+	testImplementation"org.assertj:assertj-core:$assertJVersion"
 }
 
 tasks.named('test') {
