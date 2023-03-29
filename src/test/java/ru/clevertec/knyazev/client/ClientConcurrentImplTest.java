@@ -48,7 +48,9 @@ public class ClientConcurrentImplTest {
 		es.shutdown();
 		es.awaitTermination(10, TimeUnit.SECONDS);
 
-		assertAll(() -> assertThat(clientList.size()).isEqualTo(0), () -> assertThat(resultList.size()).isEqualTo(100),
+		assertAll(
+				() -> assertThat(clientList.size()).isEqualTo(0), 
+				() -> assertThat(resultList.size()).isEqualTo(100),
 				() -> assertThat(resultList.stream().distinct().toList().size()).isEqualTo(100));
 	}
 

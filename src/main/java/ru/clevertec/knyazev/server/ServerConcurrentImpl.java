@@ -8,14 +8,14 @@ import ru.clevertec.knyazev.data.MultiThreadingDataTransfer;
 import ru.clevertec.knyazev.data.Request;
 import ru.clevertec.knyazev.data.Response;
 
-public class ServerImpl extends Server<Integer> implements MultiThreadingDataTransfer<Response, Request> {
+public class ServerConcurrentImpl extends Server<SimpleList<Integer>> implements MultiThreadingDataTransfer<Response, Request> {
 
-	public ServerImpl(SimpleList<Integer> serverData) {
+	public ServerConcurrentImpl(SimpleList<Integer> serverData) {
 		super(serverData);
 	}
 
 	@Override
-	public void getRequest(Request clientRequest) {
+	void getRequest(Request clientRequest) {
 		try {
 			serverData.add(clientRequest.getRequestData());
 			Thread.sleep(new Random().nextInt(100, 1001));
