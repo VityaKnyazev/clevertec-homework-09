@@ -17,8 +17,8 @@ public class ServerConcurrentImpl extends Server<SimpleList<Integer>> implements
 	@Override
 	void getRequest(Request clientRequest) {
 		try {
-			serverData.add(clientRequest.getRequestData());
 			Thread.sleep(new Random().nextInt(100, 1001));
+			serverData.add(clientRequest.getRequestData());			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -39,9 +39,11 @@ public class ServerConcurrentImpl extends Server<SimpleList<Integer>> implements
 		return () -> getRequest(request);
 	}
 
-	public Callable<Response> doRequestOnResponse(Request clientRequest) {
-		getRequest(clientRequest);
-		return send();
+	public Callable<Response> doResponseOnRequest(Request clientRequest) {		
+		return () -> {
+			getRequest(clientRequest);
+			return sendResponse();
+		};
 	}
 
 }

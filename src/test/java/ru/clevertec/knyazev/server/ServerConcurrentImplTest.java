@@ -56,13 +56,28 @@ public class ServerConcurrentImplTest {
 	}
 	
 	@Test
+	public void checkRecieveShouldAddRequestValuesToServerList() throws InterruptedException {
+		List<Integer> actualRequestList = new ArrayList<>();
+		IntStream.range(1, 100 + 1).forEach(el -> actualRequestList.add(el));
+		
+		ExecutorService es = Executors.newFixedThreadPool(5);
+		
+		actualRequestList.parallelStream().forEach(el -> es.execute(serverImpl.receive(new Request(el))));
+		
+		es.shutdown();
+		es.awaitTermination(120, TimeUnit.SECONDS);
+		
+		assertThat(serverList.size()).isEqualTo(100);	
+	}
+	
+	@Test
 	public void checkDoRequestOnResponseShouldReturnServerListSizeOnResponse() throws InterruptedException, ExecutionException {
 		List<Integer> resultList = new ArrayList<>();
 		
 		ExecutorService es = Executors.newFixedThreadPool(5);
 		
 		for (int i = 1; i <= 100; i++) {
-			Future<Response> response = es.submit(serverImpl.doRequestOnResponse(new Request(i)));
+			Future<Response> response = es.submit(serverImpl.doResponseOnRequest(new Request(i)));
 			Response responseVal = response.get();
 			resultList.add(responseVal.getResponseData());
 		}

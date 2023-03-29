@@ -32,7 +32,7 @@ public class App {
 			Future<Request> clientRequest = clientExecutorService.submit(client.send());
 			Request clientRequestVal = clientRequest.get();
 					
-			Future<Response> serverResponse = serverExecutorService.submit(server.doRequestOnResponse(clientRequestVal));
+			Future<Response> serverResponse = serverExecutorService.submit(server.doResponseOnRequest(clientRequestVal));
 			Response serverResponseVal = serverResponse.get();
 			
 			clientExecutorService.execute(client.receive(serverResponseVal));		
