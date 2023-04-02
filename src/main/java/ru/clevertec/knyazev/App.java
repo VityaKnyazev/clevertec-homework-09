@@ -41,8 +41,8 @@ public class App {
 		clientExecutorService.shutdown();
 		serverExecutorService.shutdown();
 		
-		clientExecutorService.awaitTermination(2, TimeUnit.MINUTES);
-		serverExecutorService.awaitTermination(2, TimeUnit.MINUTES);
+//		clientExecutorService.awaitTermination(2, TimeUnit.MINUTES);
+//		serverExecutorService.awaitTermination(2, TimeUnit.MINUTES);
 
 		System.out.println("Client list size check: " + clientList.size());
 		System.out.println("Server list size check: " + serverList.size());
