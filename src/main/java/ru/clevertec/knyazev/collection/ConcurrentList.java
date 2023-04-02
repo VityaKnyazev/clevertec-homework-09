@@ -9,10 +9,10 @@ import java.util.stream.Stream;
 public class ConcurrentList<E> implements SimpleList<E> {
 	private static final int INIT_LIST_SIZE = 3;
 	
-	private static final Lock lock = new ReentrantLock();
+	private final Lock lock = new ReentrantLock();
 
 	private int totalListSize;
-	private int elListSize;
+	private volatile int elListSize;
 
 	private Object[] object;
 
@@ -32,7 +32,7 @@ public class ConcurrentList<E> implements SimpleList<E> {
 		lock.lock();
 		
 		if (index < 0 || index >= elListSize) {
-			throw new IndexOutOfBoundsException();
+			throw new NoSuchElementException();
 		}
 		
 		lock.unlock();

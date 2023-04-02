@@ -1,13 +1,16 @@
 package ru.clevertec.knyazev.server;
 
-import java.util.concurrent.Callable;
-
 import ru.clevertec.knyazev.data.Request;
 import ru.clevertec.knyazev.data.Response;
 
-public abstract class Server<T> implements Callable<T> {
+public abstract class Server<E> {
+	final E serverData;
 	
-	public abstract void getRequest(Request clientRequest);
+	Server(E serverData) {
+		this.serverData = serverData;
+	}
 	
-	public abstract Response sendResponse();
+	abstract void getRequest(Request clientRequest);
+	
+	abstract Response sendResponse();
 }

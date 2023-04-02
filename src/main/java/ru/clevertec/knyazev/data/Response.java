@@ -6,4 +6,8 @@ public class Response extends Data {
 		super(data);
 	}
 	
+	public Integer getResponseData() {
+		return data;
+	}
+	
 }
