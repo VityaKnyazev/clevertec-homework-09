@@ -1,5 +1,6 @@
 package ru.clevertec.knyazev;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.clevertec.knyazev.interaction.impl.Client;
 import ru.clevertec.knyazev.interaction.impl.Server;
 
@@ -9,25 +10,25 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
+@Slf4j
 public class Main {
     public static void main(String[] args) {
+
         Client client = new Client(Collections.synchronizedList(getClientList()), new AtomicInteger());
         Server server = new Server(Collections.synchronizedList(new ArrayList<>()));
 
-        ExecutorService clientExecutorService = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newCachedThreadPool();
 
         for (int i = 0; i < 100; i++) {
-            CompletableFuture.supplyAsync(() -> client.send(), clientExecutorService)
+            CompletableFuture.supplyAsync(() -> client.send(), executorService)
                     .thenApply(integerRequest -> server.service(integerRequest))
                     .thenAccept(integerResponse -> client.receive(integerResponse))
                     .whenComplete((v, ex) -> {
                         if (ex == null) {
-                            System.out.println("Server result list size: " + server.getServerData().size());
-                            System.out.println("Client result: " + client.getAccumulator().get());
-                            System.out.println("Client result list size: " + client.getClientData().size());
+                            log.info("Client accumulated result: " + client.getAccumulator().get());
                         } else {
                             ex.printStackTrace();
                         }
@@ -35,25 +36,13 @@ public class Main {
                     });
         }
 
-        clientExecutorService.shutdown();
+        executorService.shutdown();
 
-        try {
-            clientExecutorService.awaitTermination(10L, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println("Main end");
-
+        log.info("Main end");
     }
 
     public static List<Integer> getClientList() {
-        List<Integer> clientList = new ArrayList<>();
-
-        for (int i = 1; i <= 100; i++) {
-            clientList.add(i);
-        }
-
-        return clientList;
+        return IntStream.range(0, 101)
+                .collect(ArrayList::new, List::add, (l1, l2) -> l1.addAll(l2));
     }
 }
