@@ -2,7 +2,6 @@ package ru.clevertec.knyazev.interaction.impl;
 
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 import ru.clevertec.knyazev.data.impl.IntegerRequest;
 import ru.clevertec.knyazev.data.impl.IntegerResponse;
 
@@ -18,10 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClientTest {
 
-    @RepeatedTest(value = 50)
+    @RepeatedTest(50)
     public void checkSendShouldReturnAllClientListData() {
         List<Integer> clientList = IntStream.range(1, 101)
-                .collect(ArrayList::new, List::add, (l1, l2) -> l1.addAll(l2));
+                .collect(ArrayList::new, List::add, List::addAll);
 
         Client client = new Client(Collections.synchronizedList(clientList), new AtomicInteger());
 
@@ -51,7 +50,7 @@ public class ClientTest {
                         "el sum equals to 5050"));
     }
 
-    @RepeatedTest(value = 50)
+    @RepeatedTest(50)
     public void checkReceiveShouldCalculateAllReceivedData() {
         Client client = new Client(Collections.synchronizedList(new ArrayList<>()), new AtomicInteger());
 
@@ -66,6 +65,7 @@ public class ClientTest {
         inputResponses.parallelStream().forEach(response -> es.execute(() -> client.receive(response)));
 
         es.shutdown();
+
         try {
             es.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {

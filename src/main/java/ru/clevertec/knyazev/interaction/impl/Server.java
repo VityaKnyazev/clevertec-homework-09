@@ -11,9 +11,7 @@ import ru.clevertec.knyazev.interaction.exception.ServerException;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Represents simple Server that can receive integer request
@@ -47,7 +45,8 @@ public class Server implements DataTransfer {
      *
      * @param data receiving integer request data
      * @param <T> integer request value
-     * @throws ServerException if can't cast input data to integer request
+     * @throws ServerException if can't cast input data to integer request or
+     *                         thread that called method was interrupted
      */
     @Override
     public <T> void receive(Data<T> data) throws ServerException {
@@ -56,16 +55,11 @@ public class Server implements DataTransfer {
 
         try {
             request = (IntegerRequest) data;
-        } catch (ClassCastException e) {
-            throw new ServerException(e);
-        }
 
-
-        try {
             Thread.sleep(new Random().nextInt(100, 1001));
             serverData.add(request.getData());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (ClassCastException | InterruptedException e) {
+            throw new ServerException(e);
         }
     }
 
