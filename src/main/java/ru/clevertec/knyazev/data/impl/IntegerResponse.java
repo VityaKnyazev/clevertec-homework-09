@@ -1,6 +1,5 @@
 package ru.clevertec.knyazev.data.impl;
 
-import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.clevertec.knyazev.data.Data;
 
