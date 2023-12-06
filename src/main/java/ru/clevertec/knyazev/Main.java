@@ -30,7 +30,7 @@ public class Main {
                         if (ex == null) {
                             log.info("Client accumulated result: " + client.getAccumulator().get());
                         } else {
-                            ex.printStackTrace();
+                            log.error(ex.getMessage(), ex);
                         }
 
                     });
@@ -42,7 +42,7 @@ public class Main {
     }
 
     public static List<Integer> getClientList() {
-        return IntStream.range(0, 101)
-                .collect(ArrayList::new, List::add, (l1, l2) -> l1.addAll(l2));
+        return IntStream.range(1, 101)
+                .collect(ArrayList::new, List::add, List::addAll);
     }
 }
